@@ -1,0 +1,10 @@
+from fastapi import APIRouter
+
+from app.routes.v1.endpoints.models import router as cv_model_info_router
+
+# Router for the entire versioned API
+API_V1_ROUTER = APIRouter(prefix="/v1")
+
+# Include all routers from the endpoints
+API_V1_ROUTER.include_router(cv_model_info_router, prefix="/models", tags=["Computer Vision Models Information"])
+
