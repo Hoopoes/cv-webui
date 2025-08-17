@@ -1,7 +1,7 @@
 import uuid
 from typing import Literal
 from fastapi import APIRouter
-from pydantic import BaseModel, RootModel
+from pydantic import BaseModel, ConfigDict, Field, RootModel
 
 import app.errors.error as http_error
 
@@ -13,7 +13,10 @@ class Model(BaseModel):
     framework: Literal["PyTorch"]
     type: Literal["Classification", "Object Detection"]
     name: str
+    short_description: str = Field(alias="shortDescription")
     description: str
+    
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class ModelList(RootModel):
@@ -25,6 +28,7 @@ CV_MODEL_LIST = ModelList.model_validate(
         Model(
             id=str(uuid.uuid4()),
             name="YOLO (Ultralytics)",
+            short_description="Object detection and instance segmentation",
             description="Object detection and instance segmentation",
             type="Object Detection",
             framework="PyTorch",
@@ -32,6 +36,7 @@ CV_MODEL_LIST = ModelList.model_validate(
         Model(
             id=str(uuid.uuid4()),
             name="Resnet18",
+            short_description="Image classification",
             description="Image classification",
             type="Classification",
             framework="PyTorch",
