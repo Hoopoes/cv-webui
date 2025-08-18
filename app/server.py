@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
+import fastapi_swagger_dark as fsd
 from fastapi.middleware import Middleware
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
@@ -51,6 +52,9 @@ def create_app() -> FastAPI:
     init_routers(app_=app_)
     exception_handler(app=app_)
     middleware_handler(app=app_)
+    router = APIRouter()
+    fsd.install(router, path="/swagger-docs")
+    app_.include_router(router)
     return app_
 
 
